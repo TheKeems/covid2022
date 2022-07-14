@@ -14,6 +14,7 @@
    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.8.0/dist/leaflet.css"
    integrity="sha512-hoalWLoI8r4UszCkZ5kL8vayOGVae1oxXe/2A4AO6J9+580uKHDO3JdHb7NzwwzK5xr/Fs0W40kiNHxM9vyTtQ=="
    crossorigin=""/>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
    <script src="https://unpkg.com/leaflet@1.8.0/dist/leaflet.js"
    integrity="sha512-BB3hKbKWOc9Ez/TAwyWxNXeoV9c1v6FIeYiBieIWkpLjauysF18NzgR1MBNBXf8/KABdlkX68nAhlwcDFLGPCQ=="
    crossorigin=""></script>
@@ -42,8 +43,8 @@
       <div class="col s12 m6">
         <div class="card blue-grey lighten-1">
           <div class="card-content white-text">
-            <span class="card-title">welcome to my project idk what else to say</span>
-              <p>just click around on the map or look at the data or smth</p>
+            <span class="card-title">Chart</span>
+              <canvas id="bar-chart" width="800" height="450"></canvas>
           </div>
         </div>
       </div>
@@ -62,6 +63,8 @@
     <script type="text/javascript">
       pushdata();
       function pushdata(){
+        objs = coviddata.data;
+        objs.sort((a, b) => b.dead - a.dead);
         myhtml = "<ul class='collection blue-grey lighten-1'>";
         for (var i = 0; i < coviddata.data.length; i++) {
           myending = coviddata.data[i].country_code.slice(0,1) + "/" + coviddata.data[i].country_code + ".gif";
@@ -98,6 +101,37 @@
             radius: rad
           }).bindPopup(pop).addTo(map);
         }
+      }
+      bar()
+      function bar() {
+        objs = coviddata.data;
+        objs.sort((a, b) => b.dead - a.dead);
+        mylabs = [];
+        mydata = [];
+        for (var i = 0; i < 5; i++) {
+          mylabs.push(coviddata.data[i].location);
+          mydata.push(coviddata.data[i].dead);
+        }
+        new Chart(document.getElementById("bar-chart"), {
+            type: 'bar',
+            data: {
+              labels: mylabs,
+              datasets: [
+                {
+                  label: "Deaths: ",
+                  backgroundColor: ["#3e95cd", "#8e5ea2","#3cba9f","#e8c3b9","#c45850"],
+                  data: mydata
+                }
+              ]
+            },
+            options: {
+              legend: { display: false },
+              title: {
+                display: true,
+                text: 'Top 5 Countries with Most COVID Deaths'
+              }
+            }
+        });
       }
 
     </script>
