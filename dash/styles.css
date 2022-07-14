@@ -1,12 +1,11 @@
 .nav-wrapper {
-  background: turquoise;
+  background: #01579b;
 }
-
+.backgroundclass {
+  background: #546e7a;
+}
 .brand-logo{
-  margin-left: 20px;
+  margin-left: 25px;
 }
 
-.mycontainer {
-  margin: 50px;
-}
-#map { height: 180px; }
+#map { height: 340px;}
